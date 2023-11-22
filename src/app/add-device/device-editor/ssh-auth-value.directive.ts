@@ -1,7 +1,6 @@
 import {Directive, DoCheck, ElementRef, HostBinding, Input} from '@angular/core';
 import {NgControl} from "@angular/forms";
 import {NewDeviceAuthentication} from "../../types";
-import {path} from "@tauri-apps/api";
 
 @Directive({
   selector: 'input[appSshAuthValue]',

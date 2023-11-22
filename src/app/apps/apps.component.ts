@@ -6,11 +6,11 @@ import {AppManagerService, DeviceManagerService, RepositoryItem} from '../core/s
 import {MessageDialogComponent} from '../shared/components/message-dialog/message-dialog.component';
 import {ProgressDialogComponent} from '../shared/components/progress-dialog/progress-dialog.component';
 import {has, keyBy} from 'lodash';
-import {open as showOpenDialog} from '@tauri-apps/api/dialog';
+import {open as showOpenDialog} from '@tauri-apps/plugin-dialog';
 import {basename, downloadDir} from "@tauri-apps/api/path";
 import {APP_ID_HBCHANNEL} from "../shared/constants";
 import {HbchannelRemoveComponent} from "./hbchannel-remove/hbchannel-remove.component";
-import {BaseDirectory, writeBinaryFile} from "@tauri-apps/api/fs";
+import {BaseDirectory, writeBinaryFile} from "@tauri-apps/plugin-fs";
 import {LocalFileService} from "../core/services/local-file.service";
 
 @Component({
