@@ -98,26 +98,36 @@ pub fn run() {
 
 impl<R: Runtime> GetSshDir for AppHandle<R> {
     fn get_ssh_dir(&self) -> Option<PathBuf> {
-        return self.path().home_dir()
-            .or_else(|_| self.path().data_dir())
-            .map(|d| d.join(".ssh"))
-            .ok();
+        let home: Option<PathBuf>;
+        #[cfg(mobile)]
+        {
+            home = self.path().data_dir().ok();
+        }
+        #[cfg(not(mobile))] {
+            home = self.path().home_dir()
+                .or_else(|_| self.path().data_dir()).ok();
+        }
+        return home
+            .map(|d| d.join(".ssh"));
     }
 }
 
 impl<R: Runtime> GetConfDir for AppHandle<R> {
     fn get_conf_dir(&self) -> Option<PathBuf> {
         let home: Option<PathBuf>;
-        #[cfg(target_family = "windows")]
-        {
-            home = env::var("APPDATA")
-                .or_else(|_| env::var("USERPROFILE"))
-                .map(|d| PathBuf::from(d))
-                .ok();
+        #[cfg(not(mobile))] {
+            #[cfg(target_family = "windows")] {
+                home = env::var("APPDATA")
+                    .or_else(|_| env::var("USERPROFILE"))
+                    .map(|d| PathBuf::from(d))
+                    .ok();
+            }
+            #[cfg(not(target_family = "windows"))] {
+                home = self.path().home_dir().ok();
+            }
         }
-        #[cfg(not(target_family = "windows"))]
-        {
-            home = self.path().home_dir().ok();
+        #[cfg(mobile)] {
+            home = self.path().data_dir().ok();
         }
         return home.map(|d| d.join(".webos").join("ose"));
     }
