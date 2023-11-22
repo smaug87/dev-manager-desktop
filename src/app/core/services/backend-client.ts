@@ -14,11 +14,11 @@ export abstract class BackendClient {
             const cmd = `plugin:${(this.category)}|${method}`;
             console.debug('invoke', `${this.category}/${method}`, args);
             invoke(cmd, args)
-                .then(result => {
+                .then((result: unknown) => {
                     console.debug('invoke', `${this.category}/${method}`, 'result', result);
                     this.zone.run(() => resolve(result as any));
                 })
-                .catch(reason => {
+                .catch((reason: unknown) => {
                     console.warn('invoke', `${this.category}/${method}`, 'error', reason);
                     this.zone.run(() => reject(BackendClient.toBackendError(reason)));
                 });

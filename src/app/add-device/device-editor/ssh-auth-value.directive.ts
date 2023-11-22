@@ -46,7 +46,7 @@ export class SshAuthValueDirective implements DoCheck {
     if (this.appSshAuthValue == NewDeviceAuthentication.LocalKey) {
       const keyPath = this.ngControl.value?.path;
       if (keyPath) {
-        this.el.nativeElement.value = keyPath.substring(keyPath.lastIndexOf(path.sep) + 1);
+        this.el.nativeElement.value = keyPath.substring(keyPath.lastIndexOf('/') + 1);
       } else {
 
       }

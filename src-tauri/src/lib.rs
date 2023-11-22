@@ -7,7 +7,6 @@ use std::path::PathBuf;
 use log::LevelFilter;
 #[cfg(feature = "mobile")]
 use native_dialog::{MessageDialog, MessageType};
-use tauri::api::path::home_dir;
 use tauri::{AppHandle, Manager, RunEvent, Runtime};
 
 use crate::app_dirs::{GetConfDir, GetSshDir, SetConfDir, SetSshDir};
@@ -99,9 +98,10 @@ pub fn run() {
 
 impl<R: Runtime> GetSshDir for AppHandle<R> {
     fn get_ssh_dir(&self) -> Option<PathBuf> {
-        return home_dir()
-            .or_else(|| self.path_resolver().app_data_dir())
-            .map(|d| d.join(".ssh"));
+        return self.path().home_dir()
+            .or_else(|_| self.path().data_dir())
+            .map(|d| d.join(".ssh"))
+            .ok();
     }
 }
 
@@ -117,7 +117,7 @@ impl<R: Runtime> GetConfDir for AppHandle<R> {
         }
         #[cfg(not(target_family = "windows"))]
         {
-            home = home_dir();
+            home = self.path().home_dir().ok();
         }
         return home.map(|d| d.join(".webos").join("ose"));
     }

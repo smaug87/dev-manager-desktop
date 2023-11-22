@@ -298,11 +298,11 @@ export class FilesComponent implements OnInit, OnDestroy {
         const returnValue = await showOpenDialog({
             multiple: true,
             defaultPath: await downloadDir(),
-        });
+        }).then(resp => resp?.map(v => v.path));
         if (!returnValue) return;
         const progress = ProgressDialogComponent.open(this.modalService);
         try {
-            await this.session!.uploadBatch(Array.isArray(returnValue) ? returnValue : [returnValue], cwd,
+            await this.session!.uploadBatch(returnValue, cwd,
                 async (name, e): Promise<boolean> => {
                     const result = await MessageDialogComponent.open(this.modalService, {
                         title: `Failed to upload file ${name}`,
