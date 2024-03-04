@@ -56,7 +56,7 @@ features = ["windows_dpi_awareness", "windows_visual_styles"]
 optional = true
 
 [dependencies.openssl]
-version = "0.10.63"
+version = "0.10.64"
 
 [dependencies.tauri-plugin-single-instance]
 git = "https://github.com/tauri-apps/plugins-workspace"
